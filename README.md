@@ -2,36 +2,45 @@
 
 An apartment review platform where tenants leave feedback, AI generates summaries, and future tenants make informed decisions before signing a lease.
 
-## Lab 1 Scope
+## Lab 2 Scope
 
-This repository contains the **Landing page** implementation for CSCI 5709 Lab 1.
+This builds on Lab 1 (Landing page) and adds:
+
+- **React Router** — Landing, Login, Signup, and Dashboard routes
+- **AuthContext** — shared user state across pages with `setUser` and `logout`
+- **Sign In page** — email/password form with validation
+- **Sign Up page** — name, email, password, confirm password with validation
+- **Dashboard** — nav bar with username and sign out; apartment grid with search, neighbourhood filter, and sort
+- **Protected route** — the dashboard redirects to `/login` when no user is signed in
 
 ## Tech Stack
 
 - React 19
+- React Router (react-router-dom)
 - Vite
 - Vanilla CSS with design tokens
 
 ## Project Structure
 
 ```
-tenant-trails/
-├── index.html
-├── package.json
-├── vite.config.js
-└── src/
-    ├── main.jsx              Entry point
-    ├── App.jsx               Root component
-    ├── index.css             Global styles and design tokens
-    └── components/
-        ├── Landing.jsx       Landing page composition
-        ├── Landing.css
-        ├── Navbar.jsx        Top navigation bar
-        ├── Navbar.css
-        ├── Hero.jsx          Hero section
-        ├── Hero.css
-        ├── Features.jsx      Three-column features section
-        └── Features.css
+src/
+├── pages/                  Full-screen views tied to routes
+│   ├── Landing.jsx / .css
+│   ├── Login.jsx
+│   ├── Signup.jsx
+│   ├── Auth.css            Shared auth-card styles
+│   ├── Dashboard.jsx / .css
+├── components/             Reusable UI
+│   ├── ProtectedRoute.jsx
+│   ├── ApartmentCard.jsx / .css
+│   └── StarRating.jsx / .css
+├── context/                Shared state
+│   └── AuthContext.jsx
+├── data/                   Mock data
+│   └── mockData.js
+├── App.jsx                 Router + providers
+├── main.jsx                Entry point
+└── index.css               Global styles and design tokens
 ```
 
 ## Running Locally
@@ -41,7 +50,16 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 in the browser.
+Open http://localhost:5173.
+
+## Demo Login
+
+```
+Email:    alex@dal.ca
+Password: password123
+```
+
+Any valid-format email with a 6+ character password also works (mock auth).
 
 ## Production Build
 
@@ -49,15 +67,9 @@ Open http://localhost:5173 in the browser.
 npm run build
 ```
 
-The output is in the `dist/` folder.
+Output is in `dist/`.
 
 ## Deployment
 
-This project is deployed on Vercel. Vercel auto-detects Vite and builds with:
-
-- Build command: `npm run build`
-- Output directory: `dist`
-
-## Design
-
-The Landing page implements the design from the Figma prototype submitted alongside this code.
+Deployed on Vercel. `vercel.json` includes a rewrite so client-side routes
+(e.g. refreshing `/dashboard`) resolve to `index.html` instead of 404.
