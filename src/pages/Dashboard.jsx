@@ -1,31 +1,24 @@
 import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import { useReviews } from "../context/ReviewsContext";
+import TopBar from "../components/TopBar";
 import ApartmentCard from "../components/ApartmentCard";
-import {
-  apartments,
-  neighbourhoods,
-  totalReviews,
-} from "../data/mockData";
+import { apartments, neighbourhoods } from "../data/mockData";
 import "./Dashboard.css";
 
 function Dashboard() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { reviews } = useReviews();
 
   const [search, setSearch] = useState("");
   const [neighbourhood, setNeighbourhood] = useState("all");
   const [sort, setSort] = useState("rating-desc");
 
-  function handleLogout() {
-    logout();
-    navigate("/login");
-  }
+  // Live counts derived from the current reviews list
+  const totalReviews = reviews.length;
 
   const visibleApartments = useMemo(() => {
     let list = [...apartments];
 
-    // Search by name, address, or neighbourhood
     const q = search.trim().toLowerCase();
     if (q) {
       list = list.filter(
@@ -36,12 +29,10 @@ function Dashboard() {
       );
     }
 
-    // Filter by neighbourhood
     if (neighbourhood !== "all") {
       list = list.filter((a) => a.neighbourhood === neighbourhood);
     }
 
-    // Sort
     if (sort === "rating-desc") list.sort((a, b) => b.rating - a.rating);
     else if (sort === "rating-asc") list.sort((a, b) => a.rating - b.rating);
     else if (sort === "reviews-desc")
@@ -50,48 +41,9 @@ function Dashboard() {
     return list;
   }, [search, neighbourhood, sort]);
 
-  const initials = (user?.name || "?").slice(0, 2).toUpperCase();
-
   return (
     <div className="dashboard">
-      <nav className="topbar">
-        <div className="topbar__left">
-          <div className="topbar__logo" onClick={() => navigate("/")}>
-            TenantTrails
-          </div>
-          <div className="topbar__search">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-placeholder)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              className="topbar__search-input"
-              type="text"
-              placeholder="Search apartments by address or neighbourhood..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="topbar__right">
-          <span className="topbar__avatar">{initials}</span>
-          <span className="topbar__name">{user?.name}</span>
-          <button className="topbar__signout" onClick={handleLogout}>
-            Sign out
-          </button>
-        </div>
-      </nav>
+      <TopBar search={search} onSearchChange={setSearch} />
 
       <main className="dashboard__content">
         <h1 className="dashboard__title">Apartments in Halifax</h1>
@@ -143,7 +95,13 @@ function Dashboard() {
         ) : (
           <div className="dashboard__grid">
             {visibleApartments.map((apartment) => (
-              <ApartmentCard key={apartment.id} apartment={apartment} />
+              <Link
+                key={apartment.id}
+                to={`/apartment/${apartment.id}`}
+                className="dashboard__card-link"
+              >
+                <ApartmentCard apartment={apartment} />
+              </Link>
             ))}
           </div>
         )}

@@ -3,90 +3,6 @@
   background-color: var(--color-bg-subtle);
 }
 
-/* Top bar */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 32px;
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.topbar__left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.topbar__logo {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-primary);
-  cursor: pointer;
-  letter-spacing: -0.01em;
-}
-
-.topbar__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 360px;
-  height: 40px;
-  padding: 8px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background-color: var(--color-bg);
-}
-
-.topbar__search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 13px;
-  color: var(--color-text-primary);
-  background: transparent;
-}
-
-.topbar__search-input::placeholder {
-  color: var(--color-placeholder);
-}
-
-.topbar__right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.topbar__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-avatar-bg);
-  color: var(--color-primary);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.topbar__name {
-  font-size: 14px;
-  color: var(--color-text-primary);
-}
-
-.topbar__signout {
-  font-size: 14px;
-  color: var(--color-text-secondary);
-  background: none;
-  transition: color 0.15s ease;
-}
-
-.topbar__signout:hover {
-  color: var(--color-primary);
-}
-
 /* Content */
 .dashboard__content {
   max-width: 1200px;
@@ -159,6 +75,21 @@
   gap: 24px;
 }
 
+.dashboard__card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dashboard__card-link:hover {
+  transform: translateY(-2px);
+}
+
+.dashboard__card-link:hover .card {
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
 .dashboard__empty {
   color: var(--color-text-secondary);
   font-size: 15px;
@@ -177,8 +108,5 @@
 @media (max-width: 680px) {
   .dashboard__grid {
     grid-template-columns: 1fr;
-  }
-  .topbar__search {
-    width: 200px;
   }
 }

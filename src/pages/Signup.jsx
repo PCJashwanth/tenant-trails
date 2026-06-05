@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { validateSignup } from "../utils/validation";
 import "./Auth.css";
 
 function Signup() {
@@ -13,25 +14,20 @@ function Signup() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
-  function validate() {
-    const e = {};
-    if (!name.trim()) e.name = "Please enter your name.";
-    if (!email.includes("@")) e.email = "Please enter a valid email.";
-    if (password.length < 6)
-      e.password = "Password must be at least 6 characters.";
-    if (confirm !== password) e.confirm = "Passwords do not match.";
-    return e;
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
-    const e = validate();
+    const e = validateSignup(name, email, password, confirm);
     if (Object.keys(e).length > 0) {
       setErrors(e);
       return;
     }
 
-    setUser({ name: name.trim(), email });
+    const trimmedName = name.trim();
+    setUser({
+      id: `u-${trimmedName.toLowerCase().replace(/\s+/g, "-")}`,
+      name: trimmedName,
+      email,
+    });
     setErrors({});
     navigate("/dashboard");
   }

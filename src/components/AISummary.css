@@ -1,0 +1,64 @@
+.ai-summary {
+  position: relative;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  overflow: hidden;
+}
+
+.ai-summary__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    #60a5fa 50%,
+    var(--color-primary) 100%
+  );
+}
+
+.ai-summary__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ai-summary__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+}
+
+.ai-summary__body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+}
+
+.ai-summary__issues-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 10px;
+}
+
+.ai-summary__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-summary__tag {
+  padding: 4px 12px;
+  background-color: var(--color-pill-bg);
+  color: var(--color-primary);
+  font-size: 13px;
+  border-radius: var(--radius-pill);
+}

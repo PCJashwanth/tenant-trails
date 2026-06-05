@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { DEMO_USER } from "../data/mockData";
+import { validateLogin } from "../utils/validation";
 import "./Auth.css";
 
 function Login() {
@@ -12,29 +13,25 @@ function Login() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
-  function validate() {
-    const e = {};
-    if (!email.includes("@")) e.email = "Please enter a valid email.";
-    if (password.length < 6)
-      e.password = "Password must be at least 6 characters.";
-    return e;
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
-    const e = validate();
+    const e = validateLogin(email, password);
     if (Object.keys(e).length > 0) {
       setErrors(e);
       return;
     }
 
     // Check against the demo account; otherwise accept any valid-format login
-    // and derive a name from the email (mock auth for this lab).
+    // and derive an id and name from the email (mock auth for this lab).
     if (email === DEMO_USER.email && password === DEMO_USER.password) {
-      setUser({ name: DEMO_USER.name, email: DEMO_USER.email });
+      setUser({
+        id: DEMO_USER.id,
+        name: DEMO_USER.name,
+        email: DEMO_USER.email,
+      });
     } else {
       const name = email.split("@")[0];
-      setUser({ name, email });
+      setUser({ id: `u-${name}`, name, email });
     }
 
     setErrors({});
